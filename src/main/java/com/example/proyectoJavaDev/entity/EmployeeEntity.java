@@ -8,12 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "nombre de la tabla")
-public class UserEntity {
+@Table(name = "empleados")
+public class EmployeeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user")
-    private Integer userId = 0;
+    @Column(name = "id_empleado")
+    private Integer employeeId = 0;
 
     @Column(name = "nombre")
     private String name = "";
@@ -24,7 +24,15 @@ public class UserEntity {
     @Column(name = "ap_materno")
     private String lastname = "";
 
-    @Column()
+    @Column(name = "puesto")
+    private String job = "";
+
+    @Column(name = "edad")
     private Integer age = 0;
-    private Boolean status = false;
+
+    @Column(name = "genero")
+    private String gender = "";
+
+    @Column(name = "estado")
+    private String status = "";
 }
