@@ -19,5 +19,37 @@ public class CatalogEntity {
     private String nameCatalog = "";
 
     @Column(name = "ds_catalogo")
-    private String descriptionCatalog = "";  
+    private String descriptionCatalog = "";
+
+    public CatalogEntity() {}
+
+    public CatalogEntity(Integer catalogId, String nameCatalog, String descriptionCatalog) {
+        this.catalogId = catalogId;
+        this.nameCatalog = nameCatalog;
+        this.descriptionCatalog = descriptionCatalog;
+    }
+
+    public Integer getCatalogId() {
+        return catalogId;
+    }
+
+    public String getNameCatalog() {
+        return nameCatalog;
+    }
+
+    public String getDescriptionCatalog() {
+        return descriptionCatalog;
+    }
+
+    public void setCatalogId(Integer catalogId) {
+        this.catalogId = catalogId;
+    }
+
+    public void setNameCatalog(String nameCatalog) {
+        this.nameCatalog = nameCatalog;
+    }
+
+    public void setDescriptionCatalog(String descriptionCatalog) {
+        this.descriptionCatalog = descriptionCatalog;
+    }
 }

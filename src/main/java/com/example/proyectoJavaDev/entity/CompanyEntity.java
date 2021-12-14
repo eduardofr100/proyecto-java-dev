@@ -23,4 +23,45 @@ public class CompanyEntity {
 
     @Column(name = "direccion")
     private String address = "";
+
+    public CompanyEntity() {}
+
+    public CompanyEntity(Integer employeeId, String nameCompany, String businessName, String address) {
+        this.employeeId = employeeId;
+        this.nameCompany = nameCompany;
+        this.businessName = businessName;
+        this.address = address;
+    }
+
+    public Integer getEmployeeId() {
+        return employeeId;
+    }
+
+    public String getNameCompany() {
+        return nameCompany;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public void setNameCompany(String nameCompany) {
+        this.nameCompany = nameCompany;
+    }
+
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }
