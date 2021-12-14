@@ -19,10 +19,10 @@ public class EmployeeEntity {
     private String name = "";
 
     @Column(name = "ap_paterno")
-    private String firstname = "";
+    private String lastname = "";
 
     @Column(name = "ap_materno")
-    private String lastname = "";
+    private String secondLastname = "";
 
     @Column(name = "puesto")
     private String job = "";
