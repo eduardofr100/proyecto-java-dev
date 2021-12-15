@@ -1,5 +1,7 @@
 package com.example.proyectoJavaDev.controller;
 
+import com.example.proyectoJavaDev.dto.EmployeeDto;
+import com.example.proyectoJavaDev.dto.common.PageableResponse;
 import com.example.proyectoJavaDev.entity.EmployeeEntity;
 import com.example.proyectoJavaDev.service.EmployeeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,6 +29,13 @@ public class EmployeeController {
     @GetMapping("/{employeeId}")
     public Integer getEmployee(@PathVariable("employeeId") Integer employeeId) {
         return employeeId;
+    }
+
+    @GetMapping()
+    public PageableResponse<EmployeeDto> getAllEmploye(@RequestParam(value = "page") Integer page,
+                                                    @RequestParam(value = "pageSize") Integer pageSize,
+                                                    @RequestParam(value = "status") String status){
+        return employeeService.getEmployePagination(page, pageSize, status);
     }
 
 }
