@@ -17,6 +17,9 @@ public class EmployeeEntity implements Serializable {
     @Column(name = "id_empleado")
     private Integer employeeId;
 
+    @Column(name = "id_empresa")
+    private Integer companyId;
+
     @Column(name = "nombre")
     private String name;
 
@@ -38,11 +41,11 @@ public class EmployeeEntity implements Serializable {
     @Column(name = "estado")
     private String status;
 
-    public EmployeeEntity() {
-    }
+    public EmployeeEntity() {}
 
-    public EmployeeEntity(String name, String lastname, String secondLastname, String job,
+    public EmployeeEntity(Integer companyId, String name, String lastname, String secondLastname, String job,
                           Integer age, String gender, String status) {
+        this.companyId = companyId;
         this.name = name;
         this.lastname = lastname;
         this.secondLastname = secondLastname;
@@ -52,8 +55,8 @@ public class EmployeeEntity implements Serializable {
         this.status = status;
     }
 
-    public Integer getEmployeeId() {
-        return employeeId;
+    public Integer getCompanyId() {
+        return companyId;
     }
 
     public String getName() {
@@ -84,8 +87,8 @@ public class EmployeeEntity implements Serializable {
         return status;
     }
 
-    public void setEmployeeId(Integer employeeId) {
-        this.employeeId = employeeId;
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 
     public void setName(String name) {

@@ -13,7 +13,10 @@ public class ComputerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "no_serie")
-    private Integer serialId = 0;
+    private String serialId = "";
+
+    @Column(name = "id_empleado")
+    private Integer employeeId = 0;
 
     @Column(name = "modelo")
     private String model = "";
@@ -26,16 +29,19 @@ public class ComputerEntity {
 
     public ComputerEntity() {}
 
-    public ComputerEntity(Integer serialId, String model, String make, String price) {
+    public ComputerEntity(String serialId, Integer employeeId, String model, String make, String price) {
         this.serialId = serialId;
+        this.employeeId = employeeId;
         this.model = model;
         this.make = make;
         this.price = price;
     }
 
-    public Integer getSerialId() {
+    public String getSerialId() {
         return serialId;
     }
+
+    public Integer getEmployeeId() { return employeeId; }
 
     public String getModel() {
         return model;
@@ -49,9 +55,11 @@ public class ComputerEntity {
         return price;
     }
 
-    public void setSerialId(Integer serialId) {
+    public void setSerialId(String serialId) {
         this.serialId = serialId;
     }
+
+    public void setEmployeeId(Integer employeeId) { this.employeeId = employeeId; }
 
     public void setModel(String model) {
         this.model = model;

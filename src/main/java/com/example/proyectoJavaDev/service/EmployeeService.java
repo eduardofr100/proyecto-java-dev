@@ -24,6 +24,7 @@ public class EmployeeService {
         List<EmployeeDto> listEmployeesDto = new ArrayList<>();
         for (int i = 0; i < listEmployeeEntity.size(); i++) {
             listEmployeesDto.add(new EmployeeDto(
+                    listEmployeeEntity.get(i).getCompanyId(),
                     listEmployeeEntity.get(i).getName(),
                     listEmployeeEntity.get(i).getLastname(),
                     listEmployeeEntity.get(i).getSecondLastname(),
@@ -43,6 +44,7 @@ public class EmployeeService {
     public EmployeeDto getEmployeeById(Integer id) {
         EmployeeEntity employeeEntity = employeeRepository.findByEmployeeId(id);
         return new EmployeeDto(
+                employeeEntity.getCompanyId(),
                 employeeEntity.getName(),
                 employeeEntity.getLastname(),
                 employeeEntity.getSecondLastname(),
@@ -56,6 +58,7 @@ public class EmployeeService {
     public Boolean addEmployee(EmployeeDto employeeDto) {
 
         employeeRepository.save(new EmployeeEntity(
+                employeeDto.getEmployeeId(),
                 employeeDto.getName(),
                 employeeDto.getLastname(),
                 employeeDto.getSecondLastname(),
