@@ -52,4 +52,9 @@ public class EmployeeController {
         return employeeService.deleteEmployee(employeeId);
     }
 
+    @GetMapping("/status")
+    public List<EmployeeDto> getEmployeeByStatus(@RequestParam(value = "status") String status){
+        return employeeService.getEmployeByStatus(status);
+    }
+
 }

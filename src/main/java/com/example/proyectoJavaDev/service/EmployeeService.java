@@ -88,4 +88,22 @@ public class EmployeeService {
         employeeRepository.delete(employeeEntity);
         return true;
     }
+
+    public List<EmployeeDto> getEmployeByStatus (String status) {
+        List<EmployeeEntity> listEmployeeEntity = employeeRepository.findByStatus(status);
+        List<EmployeeDto> listEmployeesDto = new ArrayList<>();
+        for (int i = 0; i < listEmployeeEntity.size(); i++) {
+            listEmployeesDto.add(new EmployeeDto(
+                    listEmployeeEntity.get(i).getCompanyId(),
+                    listEmployeeEntity.get(i).getName(),
+                    listEmployeeEntity.get(i).getLastname(),
+                    listEmployeeEntity.get(i).getSecondLastname(),
+                    listEmployeeEntity.get(i).getJob(),
+                    listEmployeeEntity.get(i).getAge(),
+                    listEmployeeEntity.get(i).getGender(),
+                    listEmployeeEntity.get(i).getStatus()
+            ));
+        }
+        return listEmployeesDto;
+    }
 }
