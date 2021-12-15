@@ -47,4 +47,9 @@ public class EmployeeController {
         return employeeService.getEmployePagination(page, pageSize, status);
     }
 
+    @DeleteMapping("/delete")
+    public Boolean deleteEmployee(@RequestParam(value = "employeeId") Integer employeeId){
+        return employeeService.deleteEmployee(employeeId);
+    }
+
 }

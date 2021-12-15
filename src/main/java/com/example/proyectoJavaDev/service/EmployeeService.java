@@ -80,4 +80,9 @@ public class EmployeeService {
         return true;
     }
 
+    public Boolean deleteEmployee(Integer id) {
+        EmployeeEntity employeeEntity = employeeRepository.findByEmployeeId(id);
+        employeeRepository.delete(employeeEntity);
+        return true;
+    }
 }
