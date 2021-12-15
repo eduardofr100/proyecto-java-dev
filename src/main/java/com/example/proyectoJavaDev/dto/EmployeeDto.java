@@ -1,6 +1,8 @@
 package com.example.proyectoJavaDev.dto;
 
-public class EmployeeDto {
+import java.io.Serializable;
+
+public class EmployeeDto implements Serializable {
 
     private String name;
     private String lastname;
