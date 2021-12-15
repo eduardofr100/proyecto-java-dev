@@ -1,6 +1,6 @@
 package com.example.proyectoJavaDev.controller;
 
-import com.example.proyectoJavaDev.entity.EmployeeEntity;
+import com.example.proyectoJavaDev.dto.EmployeeDto;
 import com.example.proyectoJavaDev.service.EmployeeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +20,13 @@ public class EmployeeController {
 
 
     @GetMapping("/all")
-    public List<EmployeeEntity> getEmployees() {
+    public List<EmployeeDto> getEmployees() {
         return employeeService.getAllEmployess();
     }
 
     @GetMapping("/{employeeId}")
-    public Integer getEmployee(@PathVariable("employeeId") Integer employeeId) {
-        return employeeId;
+    public EmployeeDto getEmployee(@PathVariable("employeeId") Integer employeeId) {
+        return employeeService.getEmployeeById(employeeId);
     }
 
 }
