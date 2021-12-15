@@ -34,6 +34,12 @@ public class EmployeeController {
         return employeeService.addEmployee(employeeDto);
     }
 
+    @PutMapping("/update/{employeeId}")
+    public Boolean updateEmployee(@RequestBody EmployeeDto employeeDto,
+                                  @RequestParam(value = "employeeId") Integer employeeId) {
+        return employeeService.updateEmployee(employeeDto, employeeId);
+    }
+
     @GetMapping()
     public PageableResponse<EmployeeDto> getAllEmploye(@RequestParam(value = "page") Integer page,
                                                     @RequestParam(value = "pageSize") Integer pageSize,

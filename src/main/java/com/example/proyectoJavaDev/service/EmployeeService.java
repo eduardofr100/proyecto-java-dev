@@ -66,4 +66,18 @@ public class EmployeeService {
         ));
         return true;
     }
+
+    public Boolean updateEmployee(EmployeeDto employeeDto, Integer id) {
+        EmployeeEntity employeeEntity = employeeRepository.findByEmployeeId(id);
+        employeeEntity.setName(employeeDto.getName());
+        employeeEntity.setLastname(employeeDto.getLastname());
+        employeeEntity.setSecondLastname(employeeDto.getSecondLastname());
+        employeeEntity.setJob(employeeDto.getJob());
+        employeeEntity.setAge(employeeDto.getAge());
+        employeeEntity.setGender(employeeDto.getGender());
+        employeeEntity.setStatus(employeeDto.getStatus());
+        employeeRepository.save(employeeEntity);
+        return true;
+    }
+
 }
