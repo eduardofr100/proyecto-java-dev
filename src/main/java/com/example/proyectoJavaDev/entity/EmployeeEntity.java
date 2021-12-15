@@ -11,8 +11,9 @@ import java.io.Serializable;
 @Entity
 @Table(name = "empleados")
 public class EmployeeEntity implements Serializable {
+
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_empleado")
     private Integer employeeId;
 
@@ -40,9 +41,8 @@ public class EmployeeEntity implements Serializable {
     public EmployeeEntity() {
     }
 
-    public EmployeeEntity(Integer employeeId, String name, String lastname, String secondLastname, String job,
+    public EmployeeEntity(String name, String lastname, String secondLastname, String job,
                           Integer age, String gender, String status) {
-        this.employeeId = employeeId;
         this.name = name;
         this.lastname = lastname;
         this.secondLastname = secondLastname;
