@@ -1,9 +1,11 @@
 package com.example.proyectoJavaDev.service;
 
 import com.example.proyectoJavaDev.dto.EmployeeDto;
-import com.example.proyectoJavaDev.dto.common.PageableResponse;
 import com.example.proyectoJavaDev.entity.EmployeeEntity;
 import com.example.proyectoJavaDev.repository.EmployeeRepository;
+import com.example.proyectoJavaDev.response.EmployeeResponse;
+import com.example.proyectoJavaDev.response.PaginationResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +39,33 @@ public class EmployeeService {
         return listEmployeesDto;
     }
 
-    public PageableResponse<EmployeeDto> getEmployePagination(Integer page, Integer pageSize, String status) {
-        return null;
+    public EmployeeResponse getEmployePagination(Integer page, Integer pageSize, String status) {
+        PageRequest pageable = PageRequest.of(page - 1, pageSize);
+        Page<EmployeeEntity> data =  employeeRepository.findAll(pageable);
+
+        PaginationResponse pageUser = new PaginationResponse();
+        pageUser.setSize(data.getSize());
+        pageUser.setTotalElements(data.getTotalElements());
+        pageUser.setTotalPages(data.getTotalPages());
+        pageUser.setCurrentPag(data.getNumber());
+        pageUser.setLast(data.isLast());
+        pageUser.setSorted(false);
+
+        List<EmployeeDto> data1 = new ArrayList<>();
+        for (int i = 0; i < data.getContent().size(); i++) {
+            data1.add(new EmployeeDto(
+                    data.getContent().get(i).getCompanyId(),
+                    data.getContent().get(i).getName(),
+                    data.getContent().get(i).getLastname(),
+                    data.getContent().get(i).getSecondLastname(),
+                    data.getContent().get(i).getJob(),
+                    data.getContent().get(i).getAge(),
+                    data.getContent().get(i).getGender(),
+                    data.getContent().get(i).getStatus()
+            ));
+        }
+        EmployeeResponse employeeResponse = new EmployeeResponse(data1, pageUser);
+        return employeeResponse;
     }
 
     public EmployeeDto getEmployeeById(Integer id) {

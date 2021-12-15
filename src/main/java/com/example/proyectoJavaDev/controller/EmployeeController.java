@@ -1,7 +1,7 @@
 package com.example.proyectoJavaDev.controller;
 
 import com.example.proyectoJavaDev.dto.EmployeeDto;
-import com.example.proyectoJavaDev.dto.common.PageableResponse;
+import com.example.proyectoJavaDev.response.EmployeeResponse;
 import com.example.proyectoJavaDev.service.EmployeeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
@@ -41,9 +41,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/page")
-    public PageableResponse<EmployeeDto> getAllEmploye(@RequestParam(value = "page") Integer page,
-                                                    @RequestParam(value = "pageSize") Integer pageSize,
-                                                    @RequestParam(value = "status") String status){
+    public EmployeeResponse getAllEmploye(@RequestParam(value = "page") Integer page,
+                                          @RequestParam(value = "pageSize") Integer pageSize,
+                                          @RequestParam(value = "status") String status){
         return employeeService.getEmployePagination(page, pageSize, status);
     }
 
