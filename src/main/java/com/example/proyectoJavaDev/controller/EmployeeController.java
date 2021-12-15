@@ -34,7 +34,7 @@ public class EmployeeController {
         return employeeService.addEmployee(employeeDto);
     }
 
-    @PutMapping("/update/{employeeId}")
+    @PutMapping("/update")
     public Boolean updateEmployee(@RequestBody EmployeeDto employeeDto,
                                   @RequestParam(value = "employeeId") Integer employeeId) {
         return employeeService.updateEmployee(employeeDto, employeeId);
