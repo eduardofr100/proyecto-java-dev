@@ -40,7 +40,7 @@ public class EmployeeController {
         return employeeService.updateEmployee(employeeDto, employeeId);
     }
 
-    @GetMapping()
+    @GetMapping("/page")
     public PageableResponse<EmployeeDto> getAllEmploye(@RequestParam(value = "page") Integer page,
                                                     @RequestParam(value = "pageSize") Integer pageSize,
                                                     @RequestParam(value = "status") String status){
