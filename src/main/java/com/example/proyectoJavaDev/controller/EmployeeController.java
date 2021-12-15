@@ -18,7 +18,6 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-
     @GetMapping("/all")
     public List<EmployeeDto> getEmployees() {
         return employeeService.getAllEmployess();
@@ -27,6 +26,11 @@ public class EmployeeController {
     @GetMapping("/{employeeId}")
     public EmployeeDto getEmployee(@PathVariable("employeeId") Integer employeeId) {
         return employeeService.getEmployeeById(employeeId);
+    }
+
+    @PostMapping("/add")
+    public Boolean addEmployee(@RequestBody EmployeeDto employeeDto) {
+        return employeeService.addEmployee(employeeDto);
     }
 
 }

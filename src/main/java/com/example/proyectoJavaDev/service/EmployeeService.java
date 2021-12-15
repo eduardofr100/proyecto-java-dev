@@ -47,4 +47,17 @@ public class EmployeeService {
         );
     }
 
+    public Boolean addEmployee(EmployeeDto employeeDto) {
+
+        employeeRepository.save(new EmployeeEntity(
+                employeeDto.getName(),
+                employeeDto.getLastname(),
+                employeeDto.getSecondLastname(),
+                employeeDto.getJob(),
+                employeeDto.getAge(),
+                employeeDto.getGender(),
+                employeeDto.getStatus()
+        ));
+        return true;
+    }
 }
