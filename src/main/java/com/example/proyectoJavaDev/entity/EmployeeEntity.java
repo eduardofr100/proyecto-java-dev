@@ -6,35 +6,36 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "empleados")
-public class EmployeeEntity {
+public class EmployeeEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_empleado")
-    private Integer employeeId = 0;
+    private Integer employeeId;
 
     @Column(name = "nombre")
-    private String name = "";
+    private String name;
 
     @Column(name = "ap_paterno")
-    private String lastname = "";
+    private String lastname;
 
     @Column(name = "ap_materno")
-    private String secondLastname = "";
+    private String secondLastname;
 
     @Column(name = "puesto")
-    private String job = "";
+    private String job;
 
     @Column(name = "edad")
-    private Integer age = 0;
+    private Integer age;
 
     @Column(name = "genero")
-    private String gender = "";
+    private String gender;
 
     @Column(name = "estado")
-    private String status = "";
+    private String status;
 
     public EmployeeEntity() {
     }

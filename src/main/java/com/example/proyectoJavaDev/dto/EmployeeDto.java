@@ -2,7 +2,6 @@ package com.example.proyectoJavaDev.dto;
 
 public class EmployeeDto {
 
-    private Integer employeeId;
     private String name;
     private String lastname;
     private String secondLastname;
@@ -13,9 +12,8 @@ public class EmployeeDto {
 
     public EmployeeDto () {}
 
-    public EmployeeDto(Integer employeeId, String name, String lastname, String secondLastname,
+    public EmployeeDto(String name, String lastname, String secondLastname,
                        String job, Integer age, String gender, String status) {
-        this.employeeId = employeeId;
         this.name = name;
         this.lastname = lastname;
         this.secondLastname = secondLastname;
@@ -23,10 +21,6 @@ public class EmployeeDto {
         this.age = age;
         this.gender = gender;
         this.status = status;
-    }
-
-    public Integer getEmployeeId() {
-        return employeeId;
     }
 
     public String getName() {
@@ -55,10 +49,6 @@ public class EmployeeDto {
 
     public String getStatus() {
         return status;
-    }
-
-    public void setEmployeeId(Integer employeeId) {
-        this.employeeId = employeeId;
     }
 
     public void setName(String name) {
