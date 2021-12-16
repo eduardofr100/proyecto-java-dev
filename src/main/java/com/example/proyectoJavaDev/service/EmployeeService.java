@@ -1,12 +1,15 @@
 package com.example.proyectoJavaDev.service;
 
+import com.example.proyectoJavaDev.common.CommonErrorResponse;
 import com.example.proyectoJavaDev.dto.EmployeeDto;
 import com.example.proyectoJavaDev.entity.EmployeeEntity;
+import com.example.proyectoJavaDev.exception.NotfoundException;
 import com.example.proyectoJavaDev.repository.EmployeeRepository;
 import com.example.proyectoJavaDev.response.EmployeeResponse;
 import com.example.proyectoJavaDev.response.PaginationResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,9 +42,25 @@ public class EmployeeService {
         return listEmployeesDto;
     }
 
-    public EmployeeResponse getEmployePagination(Integer page, Integer pageSize, String status){
+    public EmployeeResponse getEmployePagination(Integer page, Integer pageSize, String status) throws NotfoundException {
         PageRequest pageable = PageRequest.of(page - 1, pageSize);
         Page<EmployeeEntity> data = employeeRepository.findAll(pageable);
+        List<String> errors = new ArrayList<>();
+        if (data.isEmpty()) {
+            errors.add("No existen datos de empleados con los par\u00E1metros proporcionados");
+            CommonErrorResponse commonErrorResponse = new CommonErrorResponse(
+                    errors,
+                    "Deben de proporcionar datos correctos",
+                    "Consulta de empleados",
+                    HttpStatus.NOT_FOUND
+            );
+            throw new NotfoundException(commonErrorResponse);
+        }
+        if (status == null) {
+            employeeRepository.findAll(pageable);
+        } else {
+            employeeRepository.findByStatus(status, pageable);
+        }
         PaginationResponse pageUser = new PaginationResponse();
         pageUser.setSize(data.getSize());
         pageUser.setTotalElements(data.getTotalElements());

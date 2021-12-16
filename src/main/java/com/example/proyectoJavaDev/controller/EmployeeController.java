@@ -46,7 +46,7 @@ public class EmployeeController {
     @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
     public EmployeeResponse getAllEmploye(@RequestParam(value = "page") Integer page,
                                           @RequestParam(value = "pageSize") Integer pageSize,
-                                          @RequestParam(value = "status") String status) {
+                                          @RequestParam(value = "status") String status) throws NotfoundException{
         return employeeService.getEmployePagination(page, pageSize, status);
     }
 
