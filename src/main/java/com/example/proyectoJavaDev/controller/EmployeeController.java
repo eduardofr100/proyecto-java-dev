@@ -22,7 +22,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/all")
-    public List<EmployeeDto> getEmployees() {
+    public List<EmployeeDto> getEmployees() throws NotfoundException {
         return employeeService.getAllEmployess();
     }
 

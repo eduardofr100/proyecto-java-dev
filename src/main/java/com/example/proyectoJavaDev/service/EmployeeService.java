@@ -24,8 +24,20 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public List<EmployeeDto> getAllEmployess() {
+    public List<EmployeeDto> getAllEmployess() throws NotfoundException {
         List<EmployeeEntity> listEmployeeEntity = employeeRepository.findAll();
+        List<String> errors = new ArrayList<>();
+        try {
+            errors.add("No existen empleados");
+            throw new NotfoundException(new CommonErrorResponse(
+                    errors,
+                    "",
+                    "",
+                    HttpStatus.NOT_FOUND
+            ));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         List<EmployeeDto> listEmployeesDto = new ArrayList<>();
         for (int i = 0; i < listEmployeeEntity.size(); i++) {
             listEmployeesDto.add(new EmployeeDto(
@@ -41,12 +53,12 @@ public class EmployeeService {
         }
         return listEmployeesDto;
     }
-
-    public EmployeeResponse getEmployePagination(Integer page, Integer pageSize, String status) throws NotfoundException {
-        PageRequest pageable = PageRequest.of(page - 1, pageSize);
-        Page<EmployeeEntity> data = employeeRepository.findAll(pageable);
+    
+    public EmployeeResponse getEmployePagination(Integer page, Integer pageSize, String status) throws NotfoundException{
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
+        Page<EmployeeEntity> pageEmployeeEntity = employeeRepository.findAll(pageRequest);
         List<String> errors = new ArrayList<>();
-        if (data.isEmpty()) {
+        if (pageEmployeeEntity.isEmpty()) {
             errors.add("No existen datos de empleados con los par\u00E1metros proporcionados");
             CommonErrorResponse commonErrorResponse = new CommonErrorResponse(
                     errors,
@@ -57,32 +69,30 @@ public class EmployeeService {
             throw new NotfoundException(commonErrorResponse);
         }
         if (status == null) {
-            employeeRepository.findAll(pageable);
+            employeeRepository.findAll(pageRequest);
         } else {
-            employeeRepository.findByStatus(status, pageable);
+            employeeRepository.findByStatus(status, pageRequest);
         }
-        PaginationResponse pageUser = new PaginationResponse();
-        pageUser.setSize(data.getSize());
-        pageUser.setTotalElements(data.getTotalElements());
-        pageUser.setTotalPages(data.getTotalPages());
-        pageUser.setCurrentPag(data.getNumber());
-        pageUser.setLast(data.isLast());
-        pageUser.setSorted(false);
-        List<EmployeeDto> data1 = new ArrayList<>();
-        for (int i = 0; i < data.getContent().size(); i++) {
-            data1.add(new EmployeeDto(
-                    data.getContent().get(i).getCompanyId(),
-                    data.getContent().get(i).getName(),
-                    data.getContent().get(i).getLastname(),
-                    data.getContent().get(i).getSecondLastname(),
-                    data.getContent().get(i).getJob(),
-                    data.getContent().get(i).getAge(),
-                    data.getContent().get(i).getGender(),
-                    data.getContent().get(i).getStatus()
+        PaginationResponse paginationResponse = new PaginationResponse();
+        paginationResponse.setSize(pageEmployeeEntity.getSize());
+        paginationResponse.setTotalElements(pageEmployeeEntity.getTotalElements());
+        paginationResponse.setTotalPages(pageEmployeeEntity.getTotalPages());
+        paginationResponse.setCurrentPag(pageEmployeeEntity.getNumber());
+        paginationResponse.setLast(pageEmployeeEntity.isLast());
+        paginationResponse.setSorted(false);
+        List<EmployeeDto> listEmployeeDto = new ArrayList<>();
+        for (int i = 0; i < pageEmployeeEntity.getContent().size(); i++)
+            listEmployeeDto.add(new EmployeeDto(
+                    pageEmployeeEntity.getContent().get(i).getCompanyId(),
+                    pageEmployeeEntity.getContent().get(i).getName(),
+                    pageEmployeeEntity.getContent().get(i).getLastname(),
+                    pageEmployeeEntity.getContent().get(i).getSecondLastname(),
+                    pageEmployeeEntity.getContent().get(i).getJob(),
+                    pageEmployeeEntity.getContent().get(i).getAge(),
+                    pageEmployeeEntity.getContent().get(i).getGender(),
+                    pageEmployeeEntity.getContent().get(i).getStatus()
             ));
-        }
-        EmployeeResponse employeeResponse = new EmployeeResponse(data1, pageUser);
-        return employeeResponse;
+        return new EmployeeResponse(listEmployeeDto, paginationResponse);
     }
 
     public EmployeeDto getEmployeeById(Integer id) {
