@@ -1,12 +1,15 @@
 package com.example.proyectoJavaDev.service;
 
+import com.example.proyectoJavaDev.common.CommonErrorResponse;
 import com.example.proyectoJavaDev.dto.EmployeeDto;
 import com.example.proyectoJavaDev.entity.EmployeeEntity;
+import com.example.proyectoJavaDev.exception.NotfoundException;
 import com.example.proyectoJavaDev.repository.EmployeeRepository;
 import com.example.proyectoJavaDev.response.EmployeeResponse;
 import com.example.proyectoJavaDev.response.PaginationResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,8 +24,18 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public List<EmployeeDto> getAllEmployess() {
+    public List<EmployeeDto> getAllEmployess() throws NotfoundException {
         List<EmployeeEntity> listEmployeeEntity = employeeRepository.findAll();
+        List<String> errors = new ArrayList<>();
+        if (!listEmployeeEntity.isEmpty()) {
+            errors.add("No existen empleados");
+            throw new NotfoundException(new CommonErrorResponse(
+                    errors,
+                    "",
+                    "",
+                    HttpStatus.NOT_FOUND
+            ));
+        }
         List<EmployeeDto> listEmployeesDto = new ArrayList<>();
         for (int i = 0; i < listEmployeeEntity.size(); i++) {
             listEmployeesDto.add(new EmployeeDto(
