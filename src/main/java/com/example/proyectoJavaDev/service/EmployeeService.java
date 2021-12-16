@@ -27,7 +27,7 @@ public class EmployeeService {
     public List<EmployeeDto> getAllEmployess() throws NotfoundException {
         List<EmployeeEntity> listEmployeeEntity = employeeRepository.findAll();
         List<String> errors = new ArrayList<>();
-        if (!listEmployeeEntity.isEmpty()) {
+        try {
             errors.add("No existen empleados");
             throw new NotfoundException(new CommonErrorResponse(
                     errors,
@@ -35,6 +35,8 @@ public class EmployeeService {
                     "",
                     HttpStatus.NOT_FOUND
             ));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         List<EmployeeDto> listEmployeesDto = new ArrayList<>();
         for (int i = 0; i < listEmployeeEntity.size(); i++) {
