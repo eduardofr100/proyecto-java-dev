@@ -62,19 +62,7 @@ public class EmployeeService {
         paginationResponse.setCurrentPag(pageEmployeeEntity.getNumber());
         paginationResponse.setLast(pageEmployeeEntity.isLast());
         paginationResponse.setSorted(false);
-        List<EmployeeDto> listEmployeeDto = new ArrayList<>();
-        for (int i = 0; i < pageEmployeeEntity.getContent().size(); i++)
-            listEmployeeDto.add(new EmployeeDto(
-                    pageEmployeeEntity.getContent().get(i).getCompanyId(),
-                    pageEmployeeEntity.getContent().get(i).getName(),
-                    pageEmployeeEntity.getContent().get(i).getLastname(),
-                    pageEmployeeEntity.getContent().get(i).getSecondLastname(),
-                    pageEmployeeEntity.getContent().get(i).getJob(),
-                    pageEmployeeEntity.getContent().get(i).getAge(),
-                    pageEmployeeEntity.getContent().get(i).getGender(),
-                    pageEmployeeEntity.getContent().get(i).getStatus()
-            ));
-        return new EmployeeResponse(listEmployeeDto, paginationResponse);
+        return new EmployeeResponse(getEmployeByStatus(status), paginationResponse);
     }
 
     public EmployeeDto getEmployeeById(Integer id) {
