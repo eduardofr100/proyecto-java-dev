@@ -39,10 +39,9 @@ public class EmployeeService {
         return listEmployeesDto;
     }
 
-    public EmployeeResponse getEmployePagination(Integer page, Integer pageSize, String status) {
+    public EmployeeResponse getEmployePagination(Integer page, Integer pageSize, String status){
         PageRequest pageable = PageRequest.of(page - 1, pageSize);
-        Page<EmployeeEntity> data =  employeeRepository.findAll(pageable);
-
+        Page<EmployeeEntity> data = employeeRepository.findAll(pageable);
         PaginationResponse pageUser = new PaginationResponse();
         pageUser.setSize(data.getSize());
         pageUser.setTotalElements(data.getTotalElements());
@@ -50,7 +49,6 @@ public class EmployeeService {
         pageUser.setCurrentPag(data.getNumber());
         pageUser.setLast(data.isLast());
         pageUser.setSorted(false);
-
         List<EmployeeDto> data1 = new ArrayList<>();
         for (int i = 0; i < data.getContent().size(); i++) {
             data1.add(new EmployeeDto(
@@ -116,7 +114,7 @@ public class EmployeeService {
         return true;
     }
 
-    public List<EmployeeDto> getEmployeByStatus (String status) {
+    public List<EmployeeDto> getEmployeByStatus(String status) {
         List<EmployeeEntity> listEmployeeEntity = employeeRepository.findByStatus(status);
         List<EmployeeDto> listEmployeesDto = new ArrayList<>();
         for (int i = 0; i < listEmployeeEntity.size(); i++) {

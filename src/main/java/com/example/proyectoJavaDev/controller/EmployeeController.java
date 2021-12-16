@@ -1,9 +1,11 @@
 package com.example.proyectoJavaDev.controller;
 
 import com.example.proyectoJavaDev.dto.EmployeeDto;
+import com.example.proyectoJavaDev.exception.NotfoundException;
 import com.example.proyectoJavaDev.response.EmployeeResponse;
 import com.example.proyectoJavaDev.service.EmployeeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,9 +43,10 @@ public class EmployeeController {
     }
 
     @GetMapping("/page")
+    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
     public EmployeeResponse getAllEmploye(@RequestParam(value = "page") Integer page,
                                           @RequestParam(value = "pageSize") Integer pageSize,
-                                          @RequestParam(value = "status") String status){
+                                          @RequestParam(value = "status") String status) {
         return employeeService.getEmployePagination(page, pageSize, status);
     }
 
