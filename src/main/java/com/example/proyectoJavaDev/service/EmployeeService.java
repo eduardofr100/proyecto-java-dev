@@ -4,6 +4,7 @@ import com.example.proyectoJavaDev.common.CommonErrorResponse;
 import com.example.proyectoJavaDev.dto.EmployeeDto;
 import com.example.proyectoJavaDev.entity.CompanyEntity;
 import com.example.proyectoJavaDev.entity.EmployeeEntity;
+import com.example.proyectoJavaDev.exception.BadRequestException;
 import com.example.proyectoJavaDev.exception.InternalException;
 import com.example.proyectoJavaDev.exception.NotfoundException;
 import com.example.proyectoJavaDev.repository.CompanyRepository;
@@ -60,7 +61,7 @@ public class EmployeeService {
         return listEmployeesDto;
     }
 
-    public EmployeeResponse getEmployePagination(Integer page, Integer pageSize, String status) throws NotfoundException {
+    public EmployeeResponse getEmployePagination(Integer page, Integer pageSize, String status) throws NotfoundException, BadRequestException {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
         Page<EmployeeEntity> pageEmployeeEntity = employeeRepository.findAll(pageRequest);
         List<String> errors = new ArrayList<>();
@@ -74,10 +75,16 @@ public class EmployeeService {
             );
             throw new NotfoundException(commonErrorResponse);
         }
-        if (status == null) {
-            employeeRepository.findAll(pageRequest);
-        } else {
-            employeeRepository.findByStatus(status, pageRequest);
+        if (status != null) {
+            pageEmployeeEntity = employeeRepository.findByStatus(status, pageRequest);
+        } else if (pageEmployeeEntity.isEmpty()) {
+            errors.add("El par\u00E1metro de estado debe ser A o I");
+            throw new BadRequestException(new CommonErrorResponse(
+                    errors,
+                    "Deben de proporcionar datos correctos",
+                    "Consulta de paginación de empleados",
+                    HttpStatus.NOT_FOUND
+            ));
         }
         PaginationResponse paginationResponse = new PaginationResponse();
         paginationResponse.setSize(pageEmployeeEntity.getSize());
@@ -86,7 +93,19 @@ public class EmployeeService {
         paginationResponse.setCurrentPag(pageEmployeeEntity.getNumber());
         paginationResponse.setLast(pageEmployeeEntity.isLast());
         paginationResponse.setSorted(false);
-        return new EmployeeResponse(getEmployeByStatus(status), paginationResponse);
+        List<EmployeeDto> listEmployeesDto = new ArrayList<>();
+        for (int i = 0; i < pageEmployeeEntity.getContent().size(); i++)
+            listEmployeesDto.add(new EmployeeDto(
+                    pageEmployeeEntity.getContent().get(i).getCompanyId(),
+                    pageEmployeeEntity.getContent().get(i).getName(),
+                    pageEmployeeEntity.getContent().get(i).getLastname(),
+                    pageEmployeeEntity.getContent().get(i).getSecondLastname(),
+                    pageEmployeeEntity.getContent().get(i).getJob(),
+                    pageEmployeeEntity.getContent().get(i).getAge(),
+                    pageEmployeeEntity.getContent().get(i).getGender(),
+                    pageEmployeeEntity.getContent().get(i).getStatus()
+            ));
+        return new EmployeeResponse(listEmployeesDto, paginationResponse);
     }
 
     public EmployeeDto getEmployeeById(Integer id) throws NotfoundException{
