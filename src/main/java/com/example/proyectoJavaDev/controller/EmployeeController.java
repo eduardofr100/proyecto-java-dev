@@ -1,6 +1,7 @@
 package com.example.proyectoJavaDev.controller;
 
 import com.example.proyectoJavaDev.dto.EmployeeDto;
+import com.example.proyectoJavaDev.exception.InternalException;
 import com.example.proyectoJavaDev.exception.NotfoundException;
 import com.example.proyectoJavaDev.response.EmployeeResponse;
 import com.example.proyectoJavaDev.service.EmployeeService;
@@ -34,7 +35,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/add")
-    public Boolean addEmployee(@RequestBody EmployeeDto employeeDto) {
+    public Boolean addEmployee(@RequestBody EmployeeDto employeeDto) throws NotfoundException {
         return employeeService.addEmployee(employeeDto);
     }
 
@@ -53,7 +54,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/delete")
-    public Boolean deleteEmployee(@RequestParam(value = "employeeId") Integer employeeId){
+    public Boolean deleteEmployee(@RequestParam(value = "employeeId") Integer employeeId) throws NotfoundException{
         return employeeService.deleteEmployee(employeeId);
     }
 
