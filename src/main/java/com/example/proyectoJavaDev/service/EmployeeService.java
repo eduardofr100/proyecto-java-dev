@@ -141,18 +141,29 @@ public class EmployeeService {
         throw new NotfoundException(commonErrorResponse);
     }
 
-    public Boolean updateEmployee(EmployeeDto employeeDto, Integer id) throws InternalException {
-        EmployeeEntity employeeEntity = employeeRepository.findByEmployeeId(id);
-        employeeEntity.setCompanyId(employeeDto.getCompanyId());
-        employeeEntity.setName(employeeDto.getName());
-        employeeEntity.setLastname(employeeDto.getLastname());
-        employeeEntity.setSecondLastname(employeeDto.getSecondLastname());
-        employeeEntity.setJob(employeeDto.getJob());
-        employeeEntity.setAge(employeeDto.getAge());
-        employeeEntity.setGender(employeeDto.getGender());
-        employeeEntity.setStatus(employeeDto.getStatus());
-        employeeRepository.save(employeeEntity);
-        return true;
+    public Boolean updateEmployee(EmployeeDto employeeDto, Integer id) throws NotfoundException {
+        var employeeEntity = employeeRepository.findByEmployeeId(id);
+        if (employeeEntity.isPresent()) {
+            employeeEntity.get().setCompanyId(employeeDto.getCompanyId());
+            employeeEntity.get().setName(employeeDto.getName());
+            employeeEntity.get().setLastname(employeeDto.getLastname());
+            employeeEntity.get().setSecondLastname(employeeDto.getSecondLastname());
+            employeeEntity.get().setJob(employeeDto.getJob());
+            employeeEntity.get().setAge(employeeDto.getAge());
+            employeeEntity.get().setGender(employeeDto.getGender());
+            employeeEntity.get().setStatus(employeeDto.getStatus());
+            employeeRepository.save(employeeEntity.get());
+            return true;
+        }
+        List<String> errors = new ArrayList<>();
+        errors.add("No existe registro del empleado con el Id: " + id.toString());
+        CommonErrorResponse commonErrorResponse = new CommonErrorResponse(
+                errors,
+                "Error al modificar el empleado",
+                "Modificacion de datos de empleados",
+                HttpStatus.NOT_FOUND
+        );
+        throw new NotfoundException(commonErrorResponse);
     }
 
     public Boolean deleteEmployee(Integer id) throws NotfoundException {

@@ -41,7 +41,7 @@ public class EmployeeController {
 
     @PutMapping("/update")
     public Boolean updateEmployee(@RequestBody EmployeeDto employeeDto,
-                                  @RequestParam(value = "employeeId") Integer employeeId) throws InternalException {
+                                  @RequestParam(value = "employeeId") Integer employeeId) throws NotfoundException {
         return employeeService.updateEmployee(employeeDto, employeeId);
     }
 

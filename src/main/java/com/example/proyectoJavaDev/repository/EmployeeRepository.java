@@ -12,7 +12,9 @@ import java.util.Optional;
 @Repository
 public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Integer> {
 
-    EmployeeEntity findByEmployeeId(Integer employeeId);
+    //EmployeeEntity findByEmployeeId(Integer employeeId);
+
+    Optional<EmployeeEntity> findByEmployeeId(Integer integer);
 
     List<EmployeeEntity> findByStatus(String status);
 
