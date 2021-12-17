@@ -100,7 +100,7 @@ public class EmployeeService {
     public Boolean addEmployee(EmployeeDto employeeDto) {
 
         employeeRepository.save(new EmployeeEntity(
-                employeeDto.getEmployeeId(),
+                employeeDto.getCompanyId(),
                 employeeDto.getName(),
                 employeeDto.getLastname(),
                 employeeDto.getSecondLastname(),
