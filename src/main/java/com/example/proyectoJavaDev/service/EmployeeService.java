@@ -34,17 +34,16 @@ public class EmployeeService {
     public List<EmployeeDto> getAllEmployess() throws NotfoundException {
         List<EmployeeEntity> listEmployeeEntity = employeeRepository.findAll();
         List<String> errors = new ArrayList<>();
-        try {
-            errors.add("No existen empleados");
+        if (listEmployeeEntity.isEmpty()) {
+            errors.add("No existen datos de empleados");
             throw new NotfoundException(new CommonErrorResponse(
                     errors,
-                    "",
-                    "",
+                    "No hay registros en la base de datos",
+                    "Consulta de todos los empleados",
                     HttpStatus.NOT_FOUND
             ));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
+        errors.add("No existen empleados");
         List<EmployeeDto> listEmployeesDto = new ArrayList<>();
         for (int i = 0; i < listEmployeeEntity.size(); i++) {
             listEmployeesDto.add(new EmployeeDto(
