@@ -126,6 +126,7 @@ public class EmployeeService {
 
     public Boolean updateEmployee(EmployeeDto employeeDto, Integer id) {
         EmployeeEntity employeeEntity = employeeRepository.findByEmployeeId(id);
+        employeeEntity.setCompanyId(employeeDto.getCompanyId());
         employeeEntity.setName(employeeDto.getName());
         employeeEntity.setLastname(employeeDto.getLastname());
         employeeEntity.setSecondLastname(employeeDto.getSecondLastname());
