@@ -3,6 +3,7 @@ package com.example.proyectoJavaDev.service;
 import com.example.proyectoJavaDev.common.CommonErrorResponse;
 import com.example.proyectoJavaDev.dto.EmployeeDto;
 import com.example.proyectoJavaDev.entity.EmployeeEntity;
+import com.example.proyectoJavaDev.exception.InternalException;
 import com.example.proyectoJavaDev.exception.NotfoundException;
 import com.example.proyectoJavaDev.repository.EmployeeRepository;
 import com.example.proyectoJavaDev.response.EmployeeResponse;
@@ -54,8 +55,8 @@ public class EmployeeService {
         }
         return listEmployeesDto;
     }
-    
-    public EmployeeResponse getEmployePagination(Integer page, Integer pageSize, String status) throws NotfoundException{
+
+    public EmployeeResponse getEmployePagination(Integer page, Integer pageSize, String status) throws NotfoundException {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
         Page<EmployeeEntity> pageEmployeeEntity = employeeRepository.findAll(pageRequest);
         List<String> errors = new ArrayList<>();
@@ -84,9 +85,9 @@ public class EmployeeService {
         return new EmployeeResponse(getEmployeByStatus(status), paginationResponse);
     }
 
-    public EmployeeDto getEmployeeById(Integer id)throws NotfoundException{
+    public EmployeeDto getEmployeeById(Integer id) throws NotfoundException {
         var employeeEntity = employeeRepository.findById(id);
-        if(employeeEntity.isPresent()) {
+        if (employeeEntity.isPresent()) {
             return new EmployeeDto(
                     employeeEntity.get().getCompanyId(),
                     employeeEntity.get().getName(),
@@ -99,7 +100,7 @@ public class EmployeeService {
             );
         }
         List<String> errors = new ArrayList<>();
-        errors.add("No existe el empleado con el registro Id: " +id.toString());
+        errors.add("No existe el empleado con el registro Id: " + id.toString());
         CommonErrorResponse commonErrorResponse = new CommonErrorResponse(
                 errors,
                 "Error en la consulta",
@@ -124,7 +125,7 @@ public class EmployeeService {
         return true;
     }
 
-    public Boolean updateEmployee(EmployeeDto employeeDto, Integer id) {
+    public Boolean updateEmployee(EmployeeDto employeeDto, Integer id) throws InternalException {
         EmployeeEntity employeeEntity = employeeRepository.findByEmployeeId(id);
         employeeEntity.setName(employeeDto.getName());
         employeeEntity.setLastname(employeeDto.getLastname());

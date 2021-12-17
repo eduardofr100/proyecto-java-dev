@@ -1,6 +1,7 @@
 package com.example.proyectoJavaDev.controller;
 
 import com.example.proyectoJavaDev.dto.EmployeeDto;
+import com.example.proyectoJavaDev.exception.InternalException;
 import com.example.proyectoJavaDev.exception.NotfoundException;
 import com.example.proyectoJavaDev.response.EmployeeResponse;
 import com.example.proyectoJavaDev.service.EmployeeService;
@@ -40,7 +41,7 @@ public class EmployeeController {
 
     @PutMapping("/update")
     public Boolean updateEmployee(@RequestBody EmployeeDto employeeDto,
-                                  @RequestParam(value = "employeeId") Integer employeeId) {
+                                  @RequestParam(value = "employeeId") Integer employeeId) throws InternalException {
         return employeeService.updateEmployee(employeeDto, employeeId);
     }
 
