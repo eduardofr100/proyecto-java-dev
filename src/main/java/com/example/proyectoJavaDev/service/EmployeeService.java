@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,24 +84,35 @@ public class EmployeeService {
         return new EmployeeResponse(getEmployeByStatus(status), paginationResponse);
     }
 
-    public EmployeeDto getEmployeeById(Integer id) {
-        EmployeeEntity employeeEntity = employeeRepository.findByEmployeeId(id);
-        return new EmployeeDto(
-                employeeEntity.getCompanyId(),
-                employeeEntity.getName(),
-                employeeEntity.getLastname(),
-                employeeEntity.getSecondLastname(),
-                employeeEntity.getJob(),
-                employeeEntity.getAge(),
-                employeeEntity.getGender(),
-                employeeEntity.getStatus()
+    public EmployeeDto getEmployeeById(Integer id)throws NotfoundException{
+        var employeeEntity = employeeRepository.findById(id);
+        if(employeeEntity.isPresent()) {
+            return new EmployeeDto(
+                    employeeEntity.get().getCompanyId(),
+                    employeeEntity.get().getName(),
+                    employeeEntity.get().getLastname(),
+                    employeeEntity.get().getSecondLastname(),
+                    employeeEntity.get().getJob(),
+                    employeeEntity.get().getAge(),
+                    employeeEntity.get().getGender(),
+                    employeeEntity.get().getStatus()
+            );
+        }
+        List<String> errors = new ArrayList<>();
+        errors.add("No existe el empleado con el registro Id: " +id.toString());
+        CommonErrorResponse commonErrorResponse = new CommonErrorResponse(
+                errors,
+                "Error en la consulta",
+                "Consulta de empleados",
+                HttpStatus.NOT_FOUND
         );
+        throw new NotfoundException(commonErrorResponse);
     }
 
     public Boolean addEmployee(EmployeeDto employeeDto) {
 
         employeeRepository.save(new EmployeeEntity(
-                employeeDto.getEmployeeId(),
+                employeeDto.getCompanyId(),
                 employeeDto.getName(),
                 employeeDto.getLastname(),
                 employeeDto.getSecondLastname(),

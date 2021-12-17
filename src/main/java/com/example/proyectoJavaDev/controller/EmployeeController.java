@@ -5,6 +5,7 @@ import com.example.proyectoJavaDev.exception.NotfoundException;
 import com.example.proyectoJavaDev.response.EmployeeResponse;
 import com.example.proyectoJavaDev.service.EmployeeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/{employeeId}")
-    public EmployeeDto getEmployee(@PathVariable("employeeId") Integer employeeId) {
+    @ResponseStatus(HttpStatus.OK)
+    public EmployeeDto getEmployee(@PathVariable(value = "employeeId") Integer employeeId) throws NotfoundException{
         return employeeService.getEmployeeById(employeeId);
     }
 

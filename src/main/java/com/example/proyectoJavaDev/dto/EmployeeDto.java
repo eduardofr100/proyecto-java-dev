@@ -3,7 +3,7 @@ package com.example.proyectoJavaDev.dto;
 import java.io.Serializable;
 
 public class EmployeeDto implements Serializable {
-    private Integer employeeId;
+    private Integer companyId;
     private String name;
     private String lastname;
     private String secondLastname;
@@ -14,9 +14,9 @@ public class EmployeeDto implements Serializable {
 
     public EmployeeDto () {}
 
-    public EmployeeDto(Integer employeeId, String name, String lastname, String secondLastname,
+    public EmployeeDto(Integer companyId, String name, String lastname, String secondLastname,
                        String job, Integer age, String gender, String status) {
-        this.employeeId = employeeId;
+        this.companyId = companyId;
         this.name = name;
         this.lastname = lastname;
         this.secondLastname = secondLastname;
@@ -25,7 +25,7 @@ public class EmployeeDto implements Serializable {
         this.gender = gender;
         this.status = status;
     }
-    public Integer getEmployeeId() { return employeeId; }
+    public Integer getCompanyId() { return companyId; }
 
     public String getName() {
         return name;
@@ -55,7 +55,7 @@ public class EmployeeDto implements Serializable {
         return status;
     }
 
-    public void setEmployeeId(Integer employeeId) { this.employeeId = employeeId; }
+    public void setCompanyId(Integer companyId) { this.companyId = companyId; }
 
     public void setName(String name) {
         this.name = name;

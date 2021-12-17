@@ -28,12 +28,12 @@ public class CommonErrorResponse implements Serializable {
 
     public CommonErrorResponse(){}
 
-    public List<String> getErrorss() {
+    public List<String> getErrors() {
         return errors;
     }
 
-    public void setErrorss(List<String> errorss) {
-        this.errors = errorss;
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 
     public String getMessage() {
@@ -63,7 +63,7 @@ public class CommonErrorResponse implements Serializable {
     @Override
     public String toString() {
         return "CommonErrorResponse{" +
-                "errorss=" + errors +
+                "errors=" + errors +
                 ", message='" + message + '\'' +
                 ", process='" + process + '\'' +
                 ", httpStatus=" + httpStatus +
