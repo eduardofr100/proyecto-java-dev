@@ -172,21 +172,32 @@ public class EmployeeService {
         throw new NotfoundException(commonErrorResponse);
     }
 
-    public List<EmployeeDto> getEmployeByStatus(String status) {
+    public List<EmployeeDto> getEmployeByStatus(String status) throws NotfoundException {
         List<EmployeeEntity> listEmployeeEntity = employeeRepository.findByStatus(status);
         List<EmployeeDto> listEmployeesDto = new ArrayList<>();
-        for (int i = 0; i < listEmployeeEntity.size(); i++) {
-            listEmployeesDto.add(new EmployeeDto(
-                    listEmployeeEntity.get(i).getCompanyId(),
-                    listEmployeeEntity.get(i).getName(),
-                    listEmployeeEntity.get(i).getLastname(),
-                    listEmployeeEntity.get(i).getSecondLastname(),
-                    listEmployeeEntity.get(i).getJob(),
-                    listEmployeeEntity.get(i).getAge(),
-                    listEmployeeEntity.get(i).getGender(),
-                    listEmployeeEntity.get(i).getStatus()
-            ));
+        if (!listEmployeeEntity.isEmpty()) {
+            for (int i = 0; i < listEmployeeEntity.size(); i++) {
+                listEmployeesDto.add(new EmployeeDto(
+                        listEmployeeEntity.get(i).getCompanyId(),
+                        listEmployeeEntity.get(i).getName(),
+                        listEmployeeEntity.get(i).getLastname(),
+                        listEmployeeEntity.get(i).getSecondLastname(),
+                        listEmployeeEntity.get(i).getJob(),
+                        listEmployeeEntity.get(i).getAge(),
+                        listEmployeeEntity.get(i).getGender(),
+                        listEmployeeEntity.get(i).getStatus()
+                ));
+            }
+            return listEmployeesDto;
         }
-        return listEmployeesDto;
+        List<String> errors = new ArrayList<>();
+        errors.add("No existe el empleado con ese estatus");
+        CommonErrorResponse commonErrorResponse = new CommonErrorResponse(
+                errors,
+                "Error en consulta de estatus",
+                "Consulta de estatus de empleados",
+                HttpStatus.NOT_FOUND
+        );
+        throw new NotfoundException(commonErrorResponse);
     }
 }

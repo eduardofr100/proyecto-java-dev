@@ -49,7 +49,7 @@ public class EmployeeController {
     @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
     public EmployeeResponse getAllEmploye(@RequestParam(value = "page") Integer page,
                                           @RequestParam(value = "pageSize") Integer pageSize,
-                                          @RequestParam(value = "status") String status) throws NotfoundException{
+                                          @RequestParam(required = false) String status) throws NotfoundException{
         return employeeService.getEmployePagination(page, pageSize, status);
     }
 
@@ -59,7 +59,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/status")
-    public List<EmployeeDto> getEmployeeByStatus(@RequestParam(value = "status") String status){
+    public List<EmployeeDto> getEmployeeByStatus(@RequestParam(required = false) String status) throws NotfoundException{
         return employeeService.getEmployeByStatus(status);
     }
 
