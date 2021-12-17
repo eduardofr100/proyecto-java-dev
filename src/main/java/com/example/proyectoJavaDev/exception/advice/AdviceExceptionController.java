@@ -5,7 +5,6 @@ import com.example.proyectoJavaDev.exception.BadRequestException;
 import com.example.proyectoJavaDev.exception.InternalException;
 import com.example.proyectoJavaDev.exception.MultipleChoicesException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -34,7 +33,8 @@ public class AdviceExceptionController {
 
     @ExceptionHandler(InternalException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public CommonErrorResponse handleAllException(InternalException exception){
-        return  exception.getCommonErrorResponse();
+    public CommonErrorResponse handleAllException(InternalException exception) {
+        return exception.getCommonErrorResponse();
     }
+
 }

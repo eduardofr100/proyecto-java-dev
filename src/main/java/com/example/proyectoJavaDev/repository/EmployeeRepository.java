@@ -17,5 +17,4 @@ public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Intege
     List<EmployeeEntity> findByStatus(String status);
 
     Page<EmployeeEntity> findByStatus(String status, Pageable pageable);
-
 }

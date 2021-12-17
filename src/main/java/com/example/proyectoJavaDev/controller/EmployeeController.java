@@ -35,7 +35,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/add")
-    public Boolean addEmployee(@RequestBody EmployeeDto employeeDto) {
+    public Boolean addEmployee(@RequestBody EmployeeDto employeeDto) throws NotfoundException {
         return employeeService.addEmployee(employeeDto);
     }
 
@@ -49,17 +49,17 @@ public class EmployeeController {
     @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
     public EmployeeResponse getAllEmploye(@RequestParam(value = "page") Integer page,
                                           @RequestParam(value = "pageSize") Integer pageSize,
-                                          @RequestParam(value = "status") String status) throws NotfoundException{
+                                          @RequestParam(required = false) String status) throws NotfoundException{
         return employeeService.getEmployePagination(page, pageSize, status);
     }
 
     @DeleteMapping("/delete")
-    public Boolean deleteEmployee(@RequestParam(value = "employeeId") Integer employeeId){
+    public Boolean deleteEmployee(@RequestParam(value = "employeeId") Integer employeeId) throws NotfoundException{
         return employeeService.deleteEmployee(employeeId);
     }
 
     @GetMapping("/status")
-    public List<EmployeeDto> getEmployeeByStatus(@RequestParam(value = "status") String status){
+    public List<EmployeeDto> getEmployeeByStatus(@RequestParam(required = false) String status) throws NotfoundException{
         return employeeService.getEmployeByStatus(status);
     }
 

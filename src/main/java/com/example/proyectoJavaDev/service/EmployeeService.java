@@ -2,14 +2,17 @@ package com.example.proyectoJavaDev.service;
 
 import com.example.proyectoJavaDev.common.CommonErrorResponse;
 import com.example.proyectoJavaDev.dto.EmployeeDto;
+import com.example.proyectoJavaDev.entity.CompanyEntity;
 import com.example.proyectoJavaDev.entity.EmployeeEntity;
 import com.example.proyectoJavaDev.exception.InternalException;
 import com.example.proyectoJavaDev.exception.NotfoundException;
+import com.example.proyectoJavaDev.repository.CompanyRepository;
 import com.example.proyectoJavaDev.repository.EmployeeRepository;
 import com.example.proyectoJavaDev.response.EmployeeResponse;
 import com.example.proyectoJavaDev.response.PaginationResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +24,11 @@ import java.util.List;
 public class EmployeeService {
 
     private EmployeeRepository employeeRepository;
+    private CompanyRepository companyRepository;
 
-    public EmployeeService(EmployeeRepository employeeRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, CompanyRepository companyRepository) {
         this.employeeRepository = employeeRepository;
+        this.companyRepository = companyRepository;
     }
 
     public List<EmployeeDto> getAllEmployess() throws NotfoundException {
@@ -85,7 +90,7 @@ public class EmployeeService {
         return new EmployeeResponse(getEmployeByStatus(status), paginationResponse);
     }
 
-    public EmployeeDto getEmployeeById(Integer id) throws NotfoundException {
+    public EmployeeDto getEmployeeById(Integer id) throws NotfoundException{
         var employeeEntity = employeeRepository.findById(id);
         if (employeeEntity.isPresent()) {
             return new EmployeeDto(
@@ -110,23 +115,35 @@ public class EmployeeService {
         throw new NotfoundException(commonErrorResponse);
     }
 
-    public Boolean addEmployee(EmployeeDto employeeDto) {
-
-        employeeRepository.save(new EmployeeEntity(
-                employeeDto.getCompanyId(),
-                employeeDto.getName(),
-                employeeDto.getLastname(),
-                employeeDto.getSecondLastname(),
-                employeeDto.getJob(),
-                employeeDto.getAge(),
-                employeeDto.getGender(),
-                employeeDto.getStatus()
-        ));
-        return true;
+    public Boolean addEmployee(EmployeeDto employeeDto) throws NotfoundException {
+        var company = companyRepository.findById(employeeDto.getCompanyId());
+        if (company.isPresent()){
+            employeeRepository.save(new EmployeeEntity(
+                    employeeDto.getCompanyId(),
+                    employeeDto.getName(),
+                    employeeDto.getLastname(),
+                    employeeDto.getSecondLastname(),
+                    employeeDto.getJob(),
+                    employeeDto.getAge(),
+                    employeeDto.getGender(),
+                    employeeDto.getStatus()
+            ));
+            return true;
+        }
+        List<String> errors = new ArrayList<>();
+        errors.add("No existe registro de la empresa con el Id: " + employeeDto.getCompanyId().toString());
+        CommonErrorResponse commonErrorResponse = new CommonErrorResponse(
+                errors,
+                "Error en la agregar empleados",
+                "Agregar nuevos empleados",
+                HttpStatus.NOT_FOUND
+        );
+        throw new NotfoundException(commonErrorResponse);
     }
 
     public Boolean updateEmployee(EmployeeDto employeeDto, Integer id) throws InternalException {
         EmployeeEntity employeeEntity = employeeRepository.findByEmployeeId(id);
+        employeeEntity.setCompanyId(employeeDto.getCompanyId());
         employeeEntity.setName(employeeDto.getName());
         employeeEntity.setLastname(employeeDto.getLastname());
         employeeEntity.setSecondLastname(employeeDto.getSecondLastname());
@@ -138,27 +155,49 @@ public class EmployeeService {
         return true;
     }
 
-    public Boolean deleteEmployee(Integer id) {
-        EmployeeEntity employeeEntity = employeeRepository.findByEmployeeId(id);
-        employeeRepository.delete(employeeEntity);
-        return true;
+    public Boolean deleteEmployee(Integer id) throws NotfoundException {
+        var employeeEntity = employeeRepository.findById(id);
+        if (employeeEntity.isPresent()) {
+            employeeRepository.delete(employeeEntity.get());
+            return true;
+        }
+        List<String> errors = new ArrayList<>();
+        errors.add("No existe el empleado con el registro Id: " +id.toString());
+        CommonErrorResponse commonErrorResponse = new CommonErrorResponse(
+                errors,
+                "Error en la consulta",
+                "Eliminar de empleados",
+                HttpStatus.NOT_FOUND
+        );
+        throw new NotfoundException(commonErrorResponse);
     }
 
-    public List<EmployeeDto> getEmployeByStatus(String status) {
+    public List<EmployeeDto> getEmployeByStatus(String status) throws NotfoundException {
         List<EmployeeEntity> listEmployeeEntity = employeeRepository.findByStatus(status);
         List<EmployeeDto> listEmployeesDto = new ArrayList<>();
-        for (int i = 0; i < listEmployeeEntity.size(); i++) {
-            listEmployeesDto.add(new EmployeeDto(
-                    listEmployeeEntity.get(i).getCompanyId(),
-                    listEmployeeEntity.get(i).getName(),
-                    listEmployeeEntity.get(i).getLastname(),
-                    listEmployeeEntity.get(i).getSecondLastname(),
-                    listEmployeeEntity.get(i).getJob(),
-                    listEmployeeEntity.get(i).getAge(),
-                    listEmployeeEntity.get(i).getGender(),
-                    listEmployeeEntity.get(i).getStatus()
-            ));
+        if (!listEmployeeEntity.isEmpty()) {
+            for (int i = 0; i < listEmployeeEntity.size(); i++) {
+                listEmployeesDto.add(new EmployeeDto(
+                        listEmployeeEntity.get(i).getCompanyId(),
+                        listEmployeeEntity.get(i).getName(),
+                        listEmployeeEntity.get(i).getLastname(),
+                        listEmployeeEntity.get(i).getSecondLastname(),
+                        listEmployeeEntity.get(i).getJob(),
+                        listEmployeeEntity.get(i).getAge(),
+                        listEmployeeEntity.get(i).getGender(),
+                        listEmployeeEntity.get(i).getStatus()
+                ));
+            }
+            return listEmployeesDto;
         }
-        return listEmployeesDto;
+        List<String> errors = new ArrayList<>();
+        errors.add("No existe el empleado con ese estatus");
+        CommonErrorResponse commonErrorResponse = new CommonErrorResponse(
+                errors,
+                "Error en consulta de estatus",
+                "Consulta de estatus de empleados",
+                HttpStatus.NOT_FOUND
+        );
+        throw new NotfoundException(commonErrorResponse);
     }
 }
