@@ -2,18 +2,16 @@ package com.example.proyectoJavaDev.service;
 
 import com.example.proyectoJavaDev.common.CommonErrorResponse;
 import com.example.proyectoJavaDev.dto.EmployeeDto;
-import com.example.proyectoJavaDev.entity.CompanyEntity;
 import com.example.proyectoJavaDev.entity.EmployeeEntity;
 import com.example.proyectoJavaDev.exception.BadRequestException;
-import com.example.proyectoJavaDev.exception.InternalException;
 import com.example.proyectoJavaDev.exception.NotfoundException;
 import com.example.proyectoJavaDev.repository.CompanyRepository;
 import com.example.proyectoJavaDev.repository.EmployeeRepository;
 import com.example.proyectoJavaDev.response.EmployeeResponse;
 import com.example.proyectoJavaDev.response.PaginationResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +22,10 @@ import java.util.List;
 @Service
 public class EmployeeService {
 
-    private EmployeeRepository employeeRepository;
-    private CompanyRepository companyRepository;
+    private final EmployeeRepository employeeRepository;
+    private final CompanyRepository companyRepository;
 
+    @Autowired
     public EmployeeService(EmployeeRepository employeeRepository, CompanyRepository companyRepository) {
         this.employeeRepository = employeeRepository;
         this.companyRepository = companyRepository;
@@ -46,16 +45,16 @@ public class EmployeeService {
         }
         errors.add("No existen empleados");
         List<EmployeeDto> listEmployeesDto = new ArrayList<>();
-        for (int i = 0; i < listEmployeeEntity.size(); i++) {
+        for (EmployeeEntity employeeEntity : listEmployeeEntity) {
             listEmployeesDto.add(new EmployeeDto(
-                    listEmployeeEntity.get(i).getCompanyId(),
-                    listEmployeeEntity.get(i).getName(),
-                    listEmployeeEntity.get(i).getLastname(),
-                    listEmployeeEntity.get(i).getSecondLastname(),
-                    listEmployeeEntity.get(i).getJob(),
-                    listEmployeeEntity.get(i).getAge(),
-                    listEmployeeEntity.get(i).getGender(),
-                    listEmployeeEntity.get(i).getStatus()
+                    employeeEntity.getCompanyId(),
+                    employeeEntity.getName(),
+                    employeeEntity.getLastname(),
+                    employeeEntity.getSecondLastname(),
+                    employeeEntity.getJob(),
+                    employeeEntity.getAge(),
+                    employeeEntity.getGender(),
+                    employeeEntity.getStatus()
             ));
         }
         return listEmployeesDto;

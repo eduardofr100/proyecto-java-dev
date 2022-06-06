@@ -1,7 +1,8 @@
 package com.example.proyectoJavaDev.util;
 
-public class Query {
+public final class Query {
 
+    private Query() {}
     private static String QUERY = "SELECT empresas.id_empresa,\n" +
             "       empresas.nombre_empresa,\n" +
             "       empresas.razon_social,\n" +
